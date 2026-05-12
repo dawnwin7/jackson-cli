@@ -163,14 +163,14 @@ jobs:
         shell: bash
         run: |
           for package in package-tarballs/dawnwin7-jackson-cli-*-*.tgz; do
-            npm publish "$package" --access public --provenance
+            npm publish "./$package" --access public --provenance
           done
 
       - name: Publish main package
         shell: bash
         run: |
           main_package="package-tarballs/dawnwin7-jackson-cli-$VERSION.tgz"
-          npm publish "$main_package" --access public --provenance
+          npm publish "./$main_package" --access public --provenance
 
   github-release:
     name: Create GitHub Release
@@ -204,8 +204,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" release-assets/* --clobber
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release-assets/* --clobber --repo "$GITHUB_REPOSITORY"
           else
-            gh release create "$TAG" release-assets/* --title "Jackson CLI $VERSION" --notes "Jackson CLI $VERSION"
+            gh release create "$TAG" release-assets/* --title "Jackson CLI $VERSION" --notes "Jackson CLI $VERSION" --repo "$GITHUB_REPOSITORY"
           fi

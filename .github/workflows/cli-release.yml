@@ -170,7 +170,7 @@ jobs:
             if npm view "@dawnwin7/jackson-cli@$package_version" version >/dev/null 2>&1; then
               echo "Skipping already-published @dawnwin7/jackson-cli@$package_version"
             else
-              npm publish "./$tarball" --access public --provenance --tag "$platform_tag"
+              npm publish "./$tarball" --access public --tag "$platform_tag"
             fi
           }
 
@@ -187,7 +187,7 @@ jobs:
           if npm view "@dawnwin7/jackson-cli@$VERSION" version >/dev/null 2>&1; then
             echo "Skipping already-published @dawnwin7/jackson-cli@$VERSION"
           else
-            npm publish "./$main_package" --access public --provenance
+            npm publish "./$main_package" --access public
           fi
 
   github-release:

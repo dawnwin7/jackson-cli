@@ -163,20 +163,22 @@ jobs:
         shell: bash
         run: |
           publish_if_needed() {
-            local package_name="$1"
-            local tarball="$2"
-            if npm view "$package_name@$VERSION" version >/dev/null 2>&1; then
-              echo "Skipping already-published $package_name@$VERSION"
+            local platform_tag="$1"
+            local package_version="$VERSION-$platform_tag"
+            local tarball="package-tarballs/dawnwin7-jackson-cli-$package_version.tgz"
+
+            if npm view "@dawnwin7/jackson-cli@$package_version" version >/dev/null 2>&1; then
+              echo "Skipping already-published @dawnwin7/jackson-cli@$package_version"
             else
-              npm publish "./$tarball" --access public --provenance
+              npm publish "./$tarball" --access public --provenance --tag "$platform_tag"
             fi
           }
 
-          publish_if_needed "@dawnwin7/jackson-cli-darwin-arm64" "package-tarballs/dawnwin7-jackson-cli-darwin-arm64-$VERSION.tgz"
-          publish_if_needed "@dawnwin7/jackson-cli-darwin-x64" "package-tarballs/dawnwin7-jackson-cli-darwin-x64-$VERSION.tgz"
-          publish_if_needed "@dawnwin7/jackson-cli-linux-arm64-gnu" "package-tarballs/dawnwin7-jackson-cli-linux-arm64-gnu-$VERSION.tgz"
-          publish_if_needed "@dawnwin7/jackson-cli-linux-x64-gnu" "package-tarballs/dawnwin7-jackson-cli-linux-x64-gnu-$VERSION.tgz"
-          publish_if_needed "@dawnwin7/jackson-cli-win32-x64-msvc" "package-tarballs/dawnwin7-jackson-cli-win32-x64-msvc-$VERSION.tgz"
+          publish_if_needed "darwin-arm64"
+          publish_if_needed "darwin-x64"
+          publish_if_needed "linux-arm64-gnu"
+          publish_if_needed "linux-x64-gnu"
+          publish_if_needed "win32-x64-msvc"
 
       - name: Publish main package
         shell: bash

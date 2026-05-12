@@ -35,7 +35,7 @@ jobs:
             package_dir: packages/cli-linux-arm64-gnu
             asset: jackson-linux-arm64-gnu
           - target: x86_64-apple-darwin
-            runner: macos-13
+            runner: macos-15-intel
             package_dir: packages/cli-darwin-x64
             asset: jackson-darwin-x64
           - target: aarch64-apple-darwin

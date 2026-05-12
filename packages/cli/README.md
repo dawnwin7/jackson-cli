@@ -12,7 +12,7 @@ Then run:
 
 ```bash
 jackson login
-jackson "hello"
+jackson send "hello"
 jackson get <request_id> --wait
 ```
 

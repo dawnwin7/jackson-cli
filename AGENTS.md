@@ -33,7 +33,7 @@ pnpm smoke
 - Credentials are stored by default at `<home>/.jackson/credentials.json`, for example `~/.jackson/credentials.json` on macOS.
 - Login credentials persist forever unless removed with `jackson logout`.
 - `JACKSON_CONFIG_HOME` overrides credential storage for tests; with the override set, credentials are stored at `$JACKSON_CONFIG_HOME/jackson/credentials.json`.
-- `jackson send` is intentionally not a documented product command. Bare positional text, for example `jackson "hello"`, is the canonical send path.
+- `jackson send "hello"` is the canonical send path. Bare positional text, for example `jackson "hello"`, is not a send alias.
 
 ## API environment
 

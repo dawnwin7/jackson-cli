@@ -38,20 +38,12 @@ fn run() -> Result<()> {
             let (request_id, wait, timeout_seconds) = parse_get(&args[1..])?;
             commands::get::run(&request_id, wait, timeout_seconds)
         }
-        "send" => bail!("`jackson send` is not canonical; use `jackson \"your message\"`"),
-        _ => send_bare_message(&args.join(" ")),
+        "send" => commands::send::run(&parse_send_message(&args[1..])?),
+        unknown => bail!(
+            "unknown command: {}. Use `jackson send \"your message\"` to send a message",
+            unknown
+        ),
     }
-}
-
-fn send_bare_message(message: &str) -> Result<()> {
-    if message.trim().is_empty() {
-        bail!("message is required");
-    }
-    let credentials = config::load_credentials()?;
-    let response = api_client::ApiClient::new(&credentials.api_base_url)
-        .create_request(&credentials.token, message)?;
-    println!("request_id: {}", response.request_id);
-    Ok(())
 }
 
 fn ensure_no_args(command: &str, args: &[String]) -> Result<()> {
@@ -120,11 +112,12 @@ fn print_command_help(command: &str) -> Result<()> {
             println!("  -h, --help                   Show help for get");
         }
         "send" => {
-            println!("jackson \"<message>\"");
+            println!("jackson send <message>");
             println!();
-            println!(
-                "Send a message to the Telegram operator. Bare text is canonical; `jackson send` is intentionally unsupported."
-            );
+            println!("Send a message to the Telegram operator and print the request_id.");
+            println!();
+            println!("Options:");
+            println!("  -h, --help  Show help for send");
         }
         unknown => bail!("unknown help topic: {}", unknown),
     }
@@ -172,16 +165,27 @@ fn parse_get(args: &[String]) -> Result<(String, bool, u64)> {
     Ok((request_id, wait, timeout_seconds))
 }
 
+fn parse_send_message(args: &[String]) -> Result<String> {
+    let message = args.join(" ");
+    if message.trim().is_empty() {
+        bail!("message is required");
+    }
+    Ok(message)
+}
+
 fn print_help() {
     println!("Jackson CLI");
     println!();
     println!("Usage:");
     println!("  jackson <command>");
     println!(
-        "  jackson \"<message>\"                           Send message to Jackson and return a request_id"
+        "  jackson send <message>                        Send message to Jackson and return a request_id"
     );
     println!();
     println!("Commands:");
+    println!(
+        "  send <message>                                Send message to Jackson and return a request_id"
+    );
     println!(
         "  login [--username <name>]                     Claim a username and store local credentials; credentials persist forever"
     );
@@ -195,7 +199,7 @@ fn print_help() {
     println!();
     println!("Examples:");
     println!("  jackson login --username jackson");
-    println!("  jackson \"how are you?\"");
+    println!("  jackson send \"how are you?\"");
     println!("  jackson get req_abc --wait");
     println!("  jackson whoami");
     println!("  jackson logout");

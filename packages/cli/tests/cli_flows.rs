@@ -104,10 +104,11 @@ fn help_lists_commands_with_descriptions_and_command_help() {
     assert!(output.status.success());
     let stdout = String::from_utf8_lossy(&output.stdout);
     assert!(stdout.contains("Usage:"));
-    assert!(stdout.contains("jackson \"<message>\""));
+    assert!(stdout.contains("jackson send <message>"));
     assert!(stdout.contains("Send message to Jackson"));
     assert!(stdout.contains("return a request_id"));
     assert!(stdout.contains("Commands:"));
+    assert!(stdout.contains("send <message>"));
     assert!(stdout.contains("login [--username <name>]"));
     assert!(stdout.contains("credentials persist forever"));
     assert!(stdout.contains("logout"));
@@ -134,13 +135,22 @@ fn help_lists_commands_with_descriptions_and_command_help() {
     let get_stdout = String::from_utf8_lossy(&get_help.stdout);
     assert!(get_stdout.contains("jackson get <request_id>"));
     assert!(get_stdout.contains("--timeout-seconds <seconds>"));
+
+    let send_help = command(&config, "ignored")
+        .args(["send", "--help"])
+        .output()
+        .unwrap();
+    assert!(send_help.status.success());
+    let send_stdout = String::from_utf8_lossy(&send_help.stdout);
+    assert!(send_stdout.contains("jackson send <message>"));
+    assert!(send_stdout.contains("print the request_id"));
 }
 
 #[test]
-fn bare_send_requires_credentials_and_prints_request_id() {
+fn send_command_requires_credentials_and_prints_request_id() {
     let config = TempDir::new().unwrap();
     let missing = command(&config, "http://127.0.0.1:9")
-        .arg("how are you?")
+        .args(["send", "how are you?"])
         .output()
         .unwrap();
     assert!(!missing.status.success());
@@ -166,7 +176,7 @@ fn bare_send_requires_credentials_and_prints_request_id() {
     )
     .unwrap();
     let output = command(&config, "ignored")
-        .arg("how are you?")
+        .args(["send", "how are you?"])
         .output()
         .unwrap();
     assert!(
@@ -178,6 +188,19 @@ fn bare_send_requires_credentials_and_prints_request_id() {
         String::from_utf8_lossy(&output.stdout).trim(),
         "request_id: req_abc"
     );
+}
+
+#[test]
+fn bare_message_is_not_a_send_alias() {
+    let config = TempDir::new().unwrap();
+    let output = command(&config, "ignored")
+        .arg("how are you?")
+        .output()
+        .unwrap();
+    assert!(!output.status.success());
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(stderr.contains("unknown command"));
+    assert!(stderr.contains("jackson send \"your message\""));
 }
 
 #[test]
@@ -267,7 +290,7 @@ fn get_immediate_and_wait_outputs_pending_or_reply() {
 }
 
 #[test]
-fn invalid_credentials_are_clear_and_send_alias_is_not_canonical() {
+fn invalid_credentials_are_clear() {
     let config = TempDir::new().unwrap();
     fs::create_dir_all(config.path().join("jackson")).unwrap();
     let base_url = spawn_server(vec![ResponseSpec {
@@ -286,11 +309,4 @@ fn invalid_credentials_are_clear_and_send_alias_is_not_canonical() {
         .unwrap();
     assert!(!invalid.status.success());
     assert!(String::from_utf8_lossy(&invalid.stderr).contains("authentication failed"));
-
-    let send = command(&config, "ignored")
-        .args(["send", "hello"])
-        .output()
-        .unwrap();
-    assert!(!send.status.success());
-    assert!(String::from_utf8_lossy(&send.stderr).contains("not canonical"));
 }

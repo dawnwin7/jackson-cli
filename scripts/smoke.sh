@@ -36,7 +36,7 @@ fi
 
 CLI=(cargo run --quiet --manifest-path "$ROOT/packages/cli/Cargo.toml" --)
 JACKSON_CONFIG_HOME="$CONFIG_HOME" JACKSON_API_BASE_URL="$BASE_URL" "${CLI[@]}" login --username smoke-user >/tmp/jackson-login.out
-SEND_OUTPUT=$(JACKSON_CONFIG_HOME="$CONFIG_HOME" JACKSON_API_BASE_URL="$BASE_URL" "${CLI[@]}" "how are you?")
+SEND_OUTPUT=$(JACKSON_CONFIG_HOME="$CONFIG_HOME" JACKSON_API_BASE_URL="$BASE_URL" "${CLI[@]}" send "how are you?")
 REQUEST_ID="${SEND_OUTPUT#request_id: }"
 
 curl --noproxy '*' -fsS "$BASE_URL/telegram/webhook" \
@@ -47,7 +47,7 @@ curl --noproxy '*' -fsS "$BASE_URL/telegram/webhook" \
 REPLY=$(JACKSON_CONFIG_HOME="$CONFIG_HOME" JACKSON_API_BASE_URL="$BASE_URL" "${CLI[@]}" get "$REQUEST_ID")
 [[ "$REPLY" == "smoke reply" ]]
 
-WAIT_OUTPUT=$(JACKSON_CONFIG_HOME="$CONFIG_HOME" JACKSON_API_BASE_URL="$BASE_URL" "${CLI[@]}" "delayed?")
+WAIT_OUTPUT=$(JACKSON_CONFIG_HOME="$CONFIG_HOME" JACKSON_API_BASE_URL="$BASE_URL" "${CLI[@]}" send "delayed?")
 WAIT_ID="${WAIT_OUTPUT#request_id: }"
 (
   sleep 1

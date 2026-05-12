@@ -15,7 +15,7 @@ jackson login
 Send a message to Jackson. This returns a `request_id`:
 
 ```bash
-jackson "how are you?"
+jackson send "how are you?"
 ```
 
 Read the reply for a request:

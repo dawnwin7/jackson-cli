@@ -84,6 +84,7 @@ jobs:
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
       - name: Apply release version
+        shell: bash
         run: node packages/cli/scripts/set-release-version.mjs "$VERSION"
 
       - name: Test CLI
@@ -102,6 +103,7 @@ jobs:
           npm pack "./${{ matrix.package_dir }}" --pack-destination package-tarballs
 
       - name: Build release archive
+        shell: bash
         run: node packages/cli/scripts/make-release-archive.mjs --target ${{ matrix.target }} --version "$VERSION"
 
       - name: Upload platform npm tarball
@@ -151,6 +153,7 @@ jobs:
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
       - name: Apply release version
+        shell: bash
         run: node packages/cli/scripts/set-release-version.mjs "$VERSION"
 
       - name: Pack main npm package

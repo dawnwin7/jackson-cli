@@ -1,5 +1,6 @@
 "use client";
 
+import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 
 const installCommand = "npm i -g @dawnwin7/jackson-cli";
@@ -20,8 +21,12 @@ export default function HomePage() {
         <h1 id="hero-title">Let agents message Jackson at any time.</h1>
         <div className="install" aria-label="Install command">
           <code>{installCommand}</code>
-          <button type="button" aria-label="Copy install command" onClick={copyInstallCommand}>
-            {copied ? "copied" : "copy"}
+          <button
+            type="button"
+            aria-label={copied ? "Install command copied" : "Copy install command"}
+            onClick={copyInstallCommand}
+          >
+            {copied ? <Check aria-hidden="true" size={16} /> : <Copy aria-hidden="true" size={16} />}
           </button>
         </div>
       </section>

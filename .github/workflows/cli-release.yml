@@ -162,15 +162,31 @@ jobs:
       - name: Publish platform packages
         shell: bash
         run: |
-          for package in package-tarballs/dawnwin7-jackson-cli-*-*.tgz; do
-            npm publish "./$package" --access public --provenance
-          done
+          publish_if_needed() {
+            local package_name="$1"
+            local tarball="$2"
+            if npm view "$package_name@$VERSION" version >/dev/null 2>&1; then
+              echo "Skipping already-published $package_name@$VERSION"
+            else
+              npm publish "./$tarball" --access public --provenance
+            fi
+          }
+
+          publish_if_needed "@dawnwin7/jackson-cli-darwin-arm64" "package-tarballs/dawnwin7-jackson-cli-darwin-arm64-$VERSION.tgz"
+          publish_if_needed "@dawnwin7/jackson-cli-darwin-x64" "package-tarballs/dawnwin7-jackson-cli-darwin-x64-$VERSION.tgz"
+          publish_if_needed "@dawnwin7/jackson-cli-linux-arm64-gnu" "package-tarballs/dawnwin7-jackson-cli-linux-arm64-gnu-$VERSION.tgz"
+          publish_if_needed "@dawnwin7/jackson-cli-linux-x64-gnu" "package-tarballs/dawnwin7-jackson-cli-linux-x64-gnu-$VERSION.tgz"
+          publish_if_needed "@dawnwin7/jackson-cli-win32-x64-msvc" "package-tarballs/dawnwin7-jackson-cli-win32-x64-msvc-$VERSION.tgz"
 
       - name: Publish main package
         shell: bash
         run: |
           main_package="package-tarballs/dawnwin7-jackson-cli-$VERSION.tgz"
-          npm publish "./$main_package" --access public --provenance
+          if npm view "@dawnwin7/jackson-cli@$VERSION" version >/dev/null 2>&1; then
+            echo "Skipping already-published @dawnwin7/jackson-cli@$VERSION"
+          else
+            npm publish "./$main_package" --access public --provenance
+          fi
 
   github-release:
     name: Create GitHub Release

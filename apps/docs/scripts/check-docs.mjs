@@ -6,7 +6,7 @@ const usagePage = new URL("../app/usage/page.tsx", import.meta.url);
 
 const required = [
   "Let agents message Jackson at any time.",
-  "npm install -g @dawnwin7/jackson-cli",
+  "npm i -g @dawnwin7/jackson-cli",
   "Copy install command",
 ];
 

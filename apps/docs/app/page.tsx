@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const installCommand = "npm install -g @dawnwin7/jackson-cli";
+const installCommand = "npm i -g @dawnwin7/jackson-cli";
 
 export default function HomePage() {
   const [copied, setCopied] = useState(false);

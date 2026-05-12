@@ -1,0 +1,22 @@
+{
+  "name": "@jackson/docs",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test": "node scripts/check-docs.mjs",
+    "lint": "node scripts/check-docs.mjs",
+    "smoke": "node scripts/check-docs.mjs"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@jackson/api",
+  "private": true,
+  "scripts": {
+    "dev": "uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000",
+    "build": "uv run python -m compileall app tests",
+    "test": "uv run pytest",
+    "lint": "uv run python -m compileall app tests",
+    "smoke": "uv run python scripts/smoke.py"
+  }
+}

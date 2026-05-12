@@ -1,0 +1,55 @@
+#!/usr/bin/env node
+const { spawnSync } = require('node:child_process');
+const { existsSync } = require('node:fs');
+const { join } = require('node:path');
+
+const platformPackages = {
+  'darwin:arm64': ['@dawnwin7/jackson-cli-darwin-arm64', 'jackson'],
+  'darwin:x64': ['@dawnwin7/jackson-cli-darwin-x64', 'jackson'],
+  'linux:arm64': ['@dawnwin7/jackson-cli-linux-arm64-gnu', 'jackson'],
+  'linux:x64': ['@dawnwin7/jackson-cli-linux-x64-gnu', 'jackson'],
+  'win32:x64': ['@dawnwin7/jackson-cli-win32-x64-msvc', 'jackson.exe'],
+};
+
+function currentPlatformPackage() {
+  const key = `${process.platform}:${process.arch}`;
+  const match = platformPackages[key];
+  if (!match) {
+    throw new Error(`unsupported platform: ${key}`);
+  }
+  return match;
+}
+
+function resolvePackagedBinary() {
+  const [packageName, binaryName] = currentPlatformPackage();
+  try {
+    const packageJson = require.resolve(`${packageName}/package.json`);
+    return join(packageJson, '..', 'dist', binaryName);
+  } catch (error) {
+    const sourceTreeFallback = join(__dirname, '..', 'dist', binaryName);
+    if (existsSync(sourceTreeFallback)) {
+      return sourceTreeFallback;
+    }
+    throw new Error(`missing optional dependency ${packageName}; reinstall @dawnwin7/jackson-cli`);
+  }
+}
+
+let binary;
+try {
+  binary = resolvePackagedBinary();
+} catch (error) {
+  console.error(`error: ${error.message}`);
+  process.exit(1);
+}
+
+if (!existsSync(binary)) {
+  console.error(`error: packaged jackson binary is missing at ${binary}; reinstall @dawnwin7/jackson-cli`);
+  process.exit(1);
+}
+
+const result = spawnSync(binary, process.argv.slice(2), { stdio: 'inherit' });
+if (result.error) {
+  console.error(`error: failed to run jackson: ${result.error.message}`);
+  process.exit(1);
+}
+process.exit(result.status ?? 1);

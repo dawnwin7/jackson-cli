@@ -1,10 +1,12 @@
+export const MAIN_NPM_PACKAGE = '@dawnwin7/jackson-cli';
+export const NPM_STAGING_ROOT = 'target/npm';
+
 export const platforms = [
   {
     target: 'x86_64-unknown-linux-gnu',
     runner: 'ubuntu-latest',
     npmName: '@dawnwin7/jackson-cli-linux-x64-gnu',
     npmTag: 'linux-x64-gnu',
-    packageDir: 'packages/cli-linux-x64-gnu',
     os: 'linux',
     cpu: 'x64',
     libc: 'glibc',
@@ -16,7 +18,6 @@ export const platforms = [
     runner: 'ubuntu-24.04-arm',
     npmName: '@dawnwin7/jackson-cli-linux-arm64-gnu',
     npmTag: 'linux-arm64-gnu',
-    packageDir: 'packages/cli-linux-arm64-gnu',
     os: 'linux',
     cpu: 'arm64',
     libc: 'glibc',
@@ -28,7 +29,6 @@ export const platforms = [
     runner: 'macos-15-intel',
     npmName: '@dawnwin7/jackson-cli-darwin-x64',
     npmTag: 'darwin-x64',
-    packageDir: 'packages/cli-darwin-x64',
     os: 'darwin',
     cpu: 'x64',
     binaryName: 'jackson',
@@ -39,7 +39,6 @@ export const platforms = [
     runner: 'macos-latest',
     npmName: '@dawnwin7/jackson-cli-darwin-arm64',
     npmTag: 'darwin-arm64',
-    packageDir: 'packages/cli-darwin-arm64',
     os: 'darwin',
     cpu: 'arm64',
     binaryName: 'jackson',
@@ -50,7 +49,6 @@ export const platforms = [
     runner: 'windows-latest',
     npmName: '@dawnwin7/jackson-cli-win32-x64-msvc',
     npmTag: 'win32-x64-msvc',
-    packageDir: 'packages/cli-win32-x64-msvc',
     os: 'win32',
     cpu: 'x64',
     binaryName: 'jackson.exe',
@@ -64,4 +62,8 @@ export function platformForTarget(target) {
     throw new Error(`Unsupported Rust target: ${target}`);
   }
   return platform;
+}
+
+export function platformStagingDir(platform) {
+  return `${NPM_STAGING_ROOT}/${platform.npmTag}`;
 }

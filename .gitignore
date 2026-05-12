@@ -16,3 +16,5 @@ coverage/
 .idea/
 .fastapicloud/
 
+release-assets/
+package-tarballs/

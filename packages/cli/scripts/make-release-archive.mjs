@@ -1,7 +1,7 @@
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { platformForTarget } from './platforms.mjs';
+import { platformForTarget, platformStagingDir } from './platforms.mjs';
 
 const args = new Map();
 for (let index = 2; index < process.argv.length; index += 2) {
@@ -14,7 +14,7 @@ if (!target || !version) {
   process.exit(1);
 }
 const platform = platformForTarget(target);
-const packageDir = platform.packageDir;
+const packageDir = platformStagingDir(platform);
 const outDir = 'release-assets';
 mkdirSync(outDir, { recursive: true });
 const baseName = `${platform.assetName}-v${version}`;

@@ -28,23 +28,23 @@ jobs:
         include:
           - target: x86_64-unknown-linux-gnu
             runner: ubuntu-latest
-            package_dir: packages/cli-linux-x64-gnu
+            npm_tag: linux-x64-gnu
             asset: jackson-linux-x64-gnu
           - target: aarch64-unknown-linux-gnu
             runner: ubuntu-24.04-arm
-            package_dir: packages/cli-linux-arm64-gnu
+            npm_tag: linux-arm64-gnu
             asset: jackson-linux-arm64-gnu
           - target: x86_64-apple-darwin
             runner: macos-15-intel
-            package_dir: packages/cli-darwin-x64
+            npm_tag: darwin-x64
             asset: jackson-darwin-x64
           - target: aarch64-apple-darwin
             runner: macos-latest
-            package_dir: packages/cli-darwin-arm64
+            npm_tag: darwin-arm64
             asset: jackson-darwin-arm64
           - target: x86_64-pc-windows-msvc
             runner: windows-latest
-            package_dir: packages/cli-win32-x64-msvc
+            npm_tag: win32-x64-msvc
             asset: jackson-win32-x64-msvc
     runs-on: ${{ matrix.runner }}
     steps:
@@ -94,13 +94,14 @@ jobs:
         run: cargo build --manifest-path packages/cli/Cargo.toml --release --target ${{ matrix.target }}
 
       - name: Stage platform package
-        run: node packages/cli/scripts/stage-platform-package.mjs --target ${{ matrix.target }}
+        shell: bash
+        run: node packages/cli/scripts/stage-platform-package.mjs --target ${{ matrix.target }} --version "$VERSION"
 
       - name: Pack platform npm package
         shell: bash
         run: |
           mkdir -p package-tarballs
-          npm pack "./${{ matrix.package_dir }}" --pack-destination package-tarballs
+          npm pack "./target/npm/${{ matrix.npm_tag }}" --pack-destination package-tarballs
 
       - name: Build release archive
         shell: bash

@@ -1,8 +1,5 @@
 import { readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { platforms } from './platforms.mjs';
-
-const MAIN_NPM_PACKAGE = '@dawnwin7/jackson-cli';
+import { platforms, MAIN_NPM_PACKAGE } from './platforms.mjs';
 
 const version = process.argv[2];
 if (!version || !/^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(version)) {
@@ -27,13 +24,6 @@ updatePackageJson(mainPackage, (packageJson) => {
     ]),
   );
 });
-
-for (const platform of platforms) {
-  updatePackageJson(join(platform.packageDir, 'package.json'), (packageJson) => {
-    packageJson.name = MAIN_NPM_PACKAGE;
-    packageJson.version = `${version}-${platform.npmTag}`;
-  });
-}
 
 const cargoTomlPath = 'packages/cli/Cargo.toml';
 const cargoToml = readFileSync(cargoTomlPath, 'utf8').replace(

@@ -26,12 +26,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dawnwin7/jackson-cli.git"
-  },
-  "optionalDependencies": {
-    "@dawnwin7/jackson-cli-linux-x64-gnu": "0.1.0",
-    "@dawnwin7/jackson-cli-linux-arm64-gnu": "0.1.0",
-    "@dawnwin7/jackson-cli-darwin-x64": "0.1.0",
-    "@dawnwin7/jackson-cli-darwin-arm64": "0.1.0",
-    "@dawnwin7/jackson-cli-win32-x64-msvc": "0.1.0"
   }
 }

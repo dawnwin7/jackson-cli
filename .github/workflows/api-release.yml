@@ -25,13 +25,13 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Test API
-        working-directory: packages/api
+        working-directory: apps/api
         env:
           JACKSON_TEST_MODE: 'true'
         run: uv run pytest
 
       - name: Deploy API
-        working-directory: packages/api
+        working-directory: apps/api
         env:
           FASTAPI_CLOUD_TOKEN: ${{ secrets.FASTAPI_CLOUD_TOKEN }}
           FASTAPI_CLOUD_APP_ID: ${{ secrets.FASTAPI_CLOUD_APP_ID }}

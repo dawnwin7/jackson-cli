@@ -18,7 +18,7 @@ cleanup() {
 trap cleanup EXIT
 
 (
-  cd "$ROOT/packages/api"
+  cd "$ROOT/apps/api"
   JACKSON_TEST_MODE=true uv run uvicorn app.main:app --host 127.0.0.1 --port "$PORT" >"$API_LOG" 2>&1
 ) &
 API_PID=$!

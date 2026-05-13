@@ -12,6 +12,8 @@ importers:
         specifier: latest
         version: 2.9.12
 
+  apps/api: {}
+
   apps/docs:
     dependencies:
       lucide-react:
@@ -39,8 +41,6 @@ importers:
       typescript:
         specifier: latest
         version: 6.0.3
-
-  packages/api: {}
 
   packages/cli: {}
 

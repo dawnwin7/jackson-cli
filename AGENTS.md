@@ -8,8 +8,8 @@ Workspace shape:
 
 ```text
 apps/docs        # Next.js landing page/docs app
+apps/api         # FastAPI app deployable by FastAPI Cloud
 packages/cli     # Rust CLI binary named jackson
-packages/api     # FastAPI app deployable by FastAPI Cloud
 ```
 
 ## Local commands
@@ -62,10 +62,10 @@ When configuring Telegram webhooks, set a secret token and send updates to the A
 
 ## FastAPI Cloud
 
-The deployable FastAPI app directory is `packages/api`, with entrypoint `app.main:app` in `packages/api/pyproject.toml`.
+The deployable FastAPI app directory is `apps/api`, with entrypoint `app.main:app` in `apps/api/pyproject.toml`.
 
 ```bash
-fastapi deploy packages/api
+fastapi deploy apps/api
 ```
 
 Actual cloud deployment is credential-gated: live Telegram bot token, operator chat id, webhook secret, MongoDB env vars, and deployment credentials are required outside local smoke tests.

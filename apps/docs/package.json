@@ -10,14 +10,14 @@
   },
   "dependencies": {
     "lucide-react": "^1.14.0",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest"
+    "next": "catalog:next16",
+    "react": "catalog:next16",
+    "react-dom": "catalog:next16"
   },
   "devDependencies": {
-    "@types/node": "latest",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
-    "typescript": "latest"
+    "@types/node": "catalog:node24",
+    "@types/react": "catalog:next16",
+    "@types/react-dom": "catalog:next16",
+    "typescript": "catalog:"
   }
 }

@@ -1,9 +1,9 @@
 {
   "name": "jackson-cli-monorepo",
   "private": true,
-  "packageManager": "pnpm@10.23.0",
+  "packageManager": "pnpm@11.20.0",
   "engines": {
-    "node": ">=20.9"
+    "node": ">=24.18"
   },
   "scripts": {
     "dev": "turbo dev",
@@ -13,6 +13,6 @@
     "smoke": "turbo build && bash scripts/smoke.sh"
   },
   "devDependencies": {
-    "turbo": "latest"
+    "turbo": "2.10.8"
   }
 }

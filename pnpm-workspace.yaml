@@ -1,3 +1,16 @@
 packages:
   - "apps/*"
   - "packages/*"
+
+catalog:
+  typescript: ^6
+
+catalogs:
+  node24:
+    "@types/node": ^24
+  next16:
+    next: 16.3.0
+    react: 19.2.4
+    react-dom: 19.2.4
+    "@types/react": ^19
+    "@types/react-dom": ^19

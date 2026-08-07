@@ -2,6 +2,10 @@ packages:
   - "apps/*"
   - "packages/*"
 
+allowBuilds:
+  esbuild: false
+  sharp: false
+
 catalog:
   typescript: ^6
 

@@ -1,11 +1,26 @@
 {
   "name": "@jackson/api",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "uv run uvicorn app.main:app --reload --host 127.0.0.1 --port 8000",
-    "build": "uv run python -m compileall app tests",
-    "test": "uv run pytest",
-    "lint": "uv run python -m compileall app tests",
-    "smoke": "uv run python scripts/smoke.py"
+    "build": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.45.2",
+    "hono": "4.13.0",
+    "postgres": "3.4.9",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:node24",
+    "dotenv": "17.4.2",
+    "drizzle-kit": "0.31.10",
+    "tsx": "^4",
+    "typescript": "catalog:",
+    "vitest": "4.1.10"
   }
 }

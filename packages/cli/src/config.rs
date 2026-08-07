@@ -12,7 +12,7 @@ pub struct Credentials {
 
 pub fn api_base_url() -> String {
     std::env::var("JACKSON_API_BASE_URL")
-        .unwrap_or_else(|_| "https://jackson-api.fastapicloud.dev".to_string())
+        .unwrap_or_else(|_| "https://jackson-cli-api.vercel.app".to_string())
 }
 
 pub fn credentials_path() -> Result<PathBuf> {

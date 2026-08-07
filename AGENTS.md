@@ -29,7 +29,7 @@ pnpm smoke
 
 ## CLI notes
 
-- `JACKSON_API_BASE_URL` defaults to `https://jackson-api.fastapicloud.dev`.
+- `JACKSON_API_BASE_URL` defaults to `https://jackson-cli-api.vercel.app`.
 - Credentials are stored by default at `<home>/.jackson/credentials.json`, for example `~/.jackson/credentials.json` on macOS.
 - Login credentials persist forever unless removed with `jackson logout`.
 - `JACKSON_CONFIG_HOME` overrides credential storage for tests; with the override set, credentials are stored at `$JACKSON_CONFIG_HOME/jackson/credentials.json`.

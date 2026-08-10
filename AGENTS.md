@@ -60,12 +60,7 @@ It stores the returned `message_id` and maps normal Telegram replies by `reply_t
 
 When configuring Telegram webhooks, set a secret token and send updates to the API webhook. Telegram will include the configured secret in the `X-Telegram-Bot-Api-Secret-Token` header; the API rejects missing or wrong values.
 
-## FastAPI Cloud
 
-The deployable FastAPI app directory is `apps/api`, with entrypoint `app.main:app` in `apps/api/pyproject.toml`.
+## Deployment
 
-```bash
-fastapi deploy apps/api
-```
-
-Actual cloud deployment is credential-gated: live Telegram bot token, operator chat id, webhook secret, MongoDB env vars, and deployment credentials are required outside local smoke tests.
+Vercel hosts all applications in this monorepo.

@@ -13,7 +13,6 @@ __pycache__/
 coverage/
 .turbo/
 .idea/
-.fastapicloud/
 
 release-assets/
 package-tarballs/

@@ -137,6 +137,7 @@ export function createApp({
 
   app.post('/telegram/webhook', async (context) => {
     if (
+      config.telegramWebhookSecret !== undefined &&
       context.req.header('X-Telegram-Bot-Api-Secret-Token') !== config.telegramWebhookSecret
     ) {
       return context.json({ detail: 'invalid telegram webhook secret' }, 401)

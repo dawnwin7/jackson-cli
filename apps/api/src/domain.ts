@@ -65,5 +65,5 @@ export interface TelegramClient {
 
 export interface AppConfig {
   telegramOperatorChatId: number
-  telegramWebhookSecret: string
+  telegramWebhookSecret?: string
 }

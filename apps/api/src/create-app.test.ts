@@ -13,9 +13,11 @@ import type {
   WebhookUpdateStatus,
 } from './domain.js'
 
+const TEST_WEBHOOK_SECRET = 'test-webhook-secret'
+
 const TEST_CONFIG: AppConfig = {
   telegramOperatorChatId: 424242,
-  telegramWebhookSecret: 'test-webhook-secret',
+  telegramWebhookSecret: TEST_WEBHOOK_SECRET,
 }
 
 interface StoredWebhookUpdate {
@@ -196,6 +198,7 @@ class FakeTelegram implements TelegramClient {
 }
 
 interface SetupOverrides {
+  config?: AppConfig
   repository?: InMemoryRepository
   telegram?: FakeTelegram
   sleep?: (milliseconds: number) => Promise<void>
@@ -211,7 +214,7 @@ function setup(overrides: SetupOverrides = {}) {
   const app = createApp({
     repository,
     telegram,
-    config: TEST_CONFIG,
+    config: overrides.config ?? TEST_CONFIG,
     generateToken,
     ...(overrides.sleep ? { sleep: overrides.sleep } : {}),
     ...(overrides.now ? { now: overrides.now } : {}),
@@ -261,7 +264,7 @@ async function createRequest(app: TestApp, token: string, message = 'question') 
 async function postWebhook(
   app: TestApp,
   body: unknown,
-  secret: string | null = TEST_CONFIG.telegramWebhookSecret,
+  secret: string | null = TEST_WEBHOOK_SECRET,
 ): Promise<Response> {
   return postJson(
     app,
@@ -559,6 +562,16 @@ describe('POST /telegram/webhook', () => {
     expect(response.status).toBe(401)
     expect(await readJson(response)).toEqual({ detail: 'invalid telegram webhook secret' })
     expect(repository.webhookUpdates.size).toBe(0)
+  })
+
+  it('accepts a webhook without a secret when none is configured', async () => {
+    const { app, repository } = setup({
+      config: { telegramOperatorChatId: TEST_CONFIG.telegramOperatorChatId },
+    })
+    const response = await postWebhook(app, { update_id: 2 }, null)
+    expect(response.status).toBe(200)
+    expect(await readJson(response)).toEqual({ ok: true, ignored: true })
+    expect(repository.webhookUpdates.size).toBe(1)
   })
 
   it.each([

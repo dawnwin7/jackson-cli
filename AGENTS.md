@@ -39,7 +39,8 @@ pnpm smoke
 
 - `JACKSON_TELEGRAM_BOT_TOKEN` live Telegram bot token.
 - `JACKSON_TELEGRAM_OPERATOR_CHAT_ID` single allowed operator chat id.
-- `JACKSON_TELEGRAM_WEBHOOK_SECRET` value expected in `X-Telegram-Bot-Api-Secret-Token`.
+- `JACKSON_TELEGRAM_UPDATE_MODE` accepts `polling` or `webhook` and defaults to `polling`.
+- `JACKSON_TELEGRAM_WEBHOOK_SECRET` optional value expected in `X-Telegram-Bot-Api-Secret-Token` when configured.
 - `JACKSON_TEST_MODE=true` uses deterministic local Telegram behavior and requires no live Telegram credentials.
 - `MONGO_URI` is required outside `JACKSON_TEST_MODE`; it must point to the production MongoDB deployment.
 - `MONOGO_DBNAME` selects the MongoDB database name. `MONGO_DBNAME` is also accepted for the corrected spelling.

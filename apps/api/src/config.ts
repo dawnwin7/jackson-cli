@@ -2,12 +2,15 @@ import type { AppConfig } from './domain.js'
 
 const TEST_BOT_TOKEN = 'test-bot-token'
 const TEST_OPERATOR_CHAT_ID = 424242
-const TEST_WEBHOOK_SECRET = 'test-webhook-secret'
 const DEFAULT_TELEGRAM_API_BASE_URL = 'https://api.telegram.org'
+const DEFAULT_TELEGRAM_UPDATE_MODE: TelegramUpdateMode = 'polling'
+
+export type TelegramUpdateMode = 'polling' | 'webhook'
 
 export interface RuntimeConfig extends AppConfig {
   telegramBotToken: string
   telegramApiBaseUrl: string
+  telegramUpdateMode: TelegramUpdateMode
   testMode: boolean
   postgresUrl: string
 }
@@ -20,10 +23,10 @@ export function loadRuntimeConfig(env: NodeJS.ProcessEnv = process.env): Runtime
       telegramBotToken: nonEmpty(env.JACKSON_TELEGRAM_BOT_TOKEN) ?? TEST_BOT_TOKEN,
       telegramOperatorChatId:
         parseOptionalChatId(env.JACKSON_TELEGRAM_OPERATOR_CHAT_ID) ?? TEST_OPERATOR_CHAT_ID,
-      telegramWebhookSecret:
-        nonEmpty(env.JACKSON_TELEGRAM_WEBHOOK_SECRET) ?? TEST_WEBHOOK_SECRET,
+      telegramWebhookSecret: nonEmpty(env.JACKSON_TELEGRAM_WEBHOOK_SECRET),
       telegramApiBaseUrl:
         nonEmpty(env.JACKSON_TELEGRAM_API_BASE_URL) ?? DEFAULT_TELEGRAM_API_BASE_URL,
+      telegramUpdateMode: parseTelegramUpdateMode(env.JACKSON_TELEGRAM_UPDATE_MODE),
       testMode: true,
       postgresUrl: requiredPostgresUrl(env),
     }
@@ -32,12 +35,21 @@ export function loadRuntimeConfig(env: NodeJS.ProcessEnv = process.env): Runtime
   return {
     telegramBotToken: required(env, 'JACKSON_TELEGRAM_BOT_TOKEN'),
     telegramOperatorChatId: parseRequiredChatId(env.JACKSON_TELEGRAM_OPERATOR_CHAT_ID),
-    telegramWebhookSecret: required(env, 'JACKSON_TELEGRAM_WEBHOOK_SECRET'),
+    telegramWebhookSecret: nonEmpty(env.JACKSON_TELEGRAM_WEBHOOK_SECRET),
     telegramApiBaseUrl:
       nonEmpty(env.JACKSON_TELEGRAM_API_BASE_URL) ?? DEFAULT_TELEGRAM_API_BASE_URL,
+    telegramUpdateMode: parseTelegramUpdateMode(env.JACKSON_TELEGRAM_UPDATE_MODE),
     testMode: false,
     postgresUrl: required(env, 'POSTGRES_URL'),
   }
+}
+
+function parseTelegramUpdateMode(value: string | undefined): TelegramUpdateMode {
+  const mode = nonEmpty(value) ?? DEFAULT_TELEGRAM_UPDATE_MODE
+  if (mode !== 'polling' && mode !== 'webhook') {
+    throw new Error('JACKSON_TELEGRAM_UPDATE_MODE must be "polling" or "webhook"')
+  }
+  return mode
 }
 
 function requiredPostgresUrl(env: NodeJS.ProcessEnv): string {

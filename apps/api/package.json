@@ -10,6 +10,8 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
+    "@better-auth/infra": "^0.3.7",
+    "better-auth": "1.7.0-rc.4",
     "drizzle-orm": "0.45.2",
     "hono": "4.13.0",
     "postgres": "3.4.9",

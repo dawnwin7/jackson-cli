@@ -7,6 +7,7 @@ import {
   hashToken,
   normalizeUsername,
 } from './services/tokens.js'
+import { createAuth } from "./lib/auth.js";
 
 const loginBodySchema = z.object({
   username: z.string().min(1).max(128),
@@ -23,6 +24,7 @@ export interface CreateAppDependencies {
   repository: Repository
   telegram: TelegramClient
   config: AppConfig
+  auth: ReturnType<typeof createAuth>
   generateToken?: () => string
   sleep?: (milliseconds: number) => Promise<void>
   now?: () => number
@@ -32,11 +34,14 @@ export function createApp({
   repository,
   telegram,
   config,
+  auth,
   generateToken = generateSecureToken,
   sleep = defaultSleep,
   now = Date.now,
 }: CreateAppDependencies) {
   const app = new Hono()
+
+  app.all("/api/auth/*", (c) => auth.handler(c.req.raw));
 
   app.post('/cli/login', async (context) => {
     const parsed = loginBodySchema.safeParse(await readJsonBody(context))

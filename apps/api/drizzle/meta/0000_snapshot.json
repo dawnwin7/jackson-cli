@@ -63,12 +63,8 @@
           "tableFrom": "replies",
           "tableTo": "requests",
           "schemaTo": "jackson",
-          "columnsFrom": [
-            "request_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["request_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -76,9 +72,7 @@
       "compositePrimaryKeys": {
         "uniq_reply_per_request": {
           "name": "uniq_reply_per_request",
-          "columns": [
-            "request_id"
-          ]
+          "columns": ["request_id"]
         }
       },
       "uniqueConstraints": {},
@@ -160,12 +154,8 @@
           "tableFrom": "requests",
           "tableTo": "users",
           "schemaTo": "jackson",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -235,12 +225,8 @@
           "tableFrom": "telegram_messages",
           "tableTo": "requests",
           "schemaTo": "jackson",
-          "columnsFrom": [
-            "request_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["request_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -248,9 +234,7 @@
       "compositePrimaryKeys": {
         "uniq_telegram_message_request": {
           "name": "uniq_telegram_message_request",
-          "columns": [
-            "request_id"
-          ]
+          "columns": ["request_id"]
         }
       },
       "uniqueConstraints": {},
@@ -324,12 +308,8 @@
           "tableFrom": "telegram_webhook_updates",
           "tableTo": "requests",
           "schemaTo": "jackson",
-          "columnsFrom": [
-            "request_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["request_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -337,9 +317,7 @@
       "compositePrimaryKeys": {
         "uniq_telegram_update_id": {
           "name": "uniq_telegram_update_id",
-          "columns": [
-            "update_id"
-          ]
+          "columns": ["update_id"]
         }
       },
       "uniqueConstraints": {},
@@ -428,19 +406,12 @@
     "jackson.request_status": {
       "name": "request_status",
       "schema": "jackson",
-      "values": [
-        "pending",
-        "replied"
-      ]
+      "values": ["pending", "replied"]
     },
     "jackson.webhook_update_status": {
       "name": "webhook_update_status",
       "schema": "jackson",
-      "values": [
-        "processed",
-        "ignored",
-        "duplicate"
-      ]
+      "values": ["processed", "ignored", "duplicate"]
     }
   },
   "schemas": {

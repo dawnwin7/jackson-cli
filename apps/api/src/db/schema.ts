@@ -8,104 +8,121 @@ import {
   timestamp,
   uniqueIndex,
   uuid,
-} from 'drizzle-orm/pg-core'
+} from "drizzle-orm/pg-core";
 
-export const jacksonSchema = pgSchema('jackson')
+export const jacksonSchema = pgSchema("jackson");
 
-export const requestStatus = jacksonSchema.enum('request_status', ['pending', 'replied'])
-export const webhookUpdateStatus = jacksonSchema.enum('webhook_update_status', [
-  'processed',
-  'ignored',
-  'duplicate',
-])
+export const requestStatus = jacksonSchema.enum("request_status", [
+  "pending",
+  "replied",
+]);
+export const webhookUpdateStatus = jacksonSchema.enum("webhook_update_status", [
+  "processed",
+  "ignored",
+  "duplicate",
+]);
 
 const timestampColumn = (name: string) =>
-  timestamp(name, { mode: 'date', withTimezone: true }).defaultNow().notNull()
+  timestamp(name, { mode: "date", withTimezone: true }).defaultNow().notNull();
 
 export const users = jacksonSchema
   .table(
-    'users',
+    "users",
     {
-      id: uuid('id').defaultRandom().primaryKey(),
-      username: text('username').notNull(),
-      usernameNormalized: text('username_normalized').notNull(),
-      tokenHash: char('token_hash', { length: 64 }).notNull(),
-      createdAt: timestampColumn('created_at'),
+      id: uuid("id").defaultRandom().primaryKey(),
+      username: text("username").notNull(),
+      usernameNormalized: text("username_normalized").notNull(),
+      tokenHash: char("token_hash", { length: 64 }).notNull(),
+      createdAt: timestampColumn("created_at"),
     },
     (table) => [
-      uniqueIndex('uniq_username_normalized').on(table.usernameNormalized),
-      uniqueIndex('uniq_token_hash').on(table.tokenHash),
+      uniqueIndex("uniq_username_normalized").on(table.usernameNormalized),
+      uniqueIndex("uniq_token_hash").on(table.tokenHash),
     ],
   )
-  .enableRLS()
+  .enableRLS();
 
 export const requests = jacksonSchema
   .table(
-    'requests',
+    "requests",
     {
-      id: text('id').primaryKey(),
-      userId: uuid('user_id')
+      id: text("id").primaryKey(),
+      userId: uuid("user_id")
         .notNull()
         .references(() => users.id),
-      message: text('message').notNull(),
-      status: requestStatus('status').default('pending').notNull(),
-      createdAt: timestampColumn('created_at'),
-      updatedAt: timestampColumn('updated_at'),
+      message: text("message").notNull(),
+      status: requestStatus("status").default("pending").notNull(),
+      createdAt: timestampColumn("created_at"),
+      updatedAt: timestampColumn("updated_at"),
     },
-    (table) => [index('by_user_created').on(table.userId, table.createdAt.desc())],
+    (table) => [
+      index("by_user_created").on(table.userId, table.createdAt.desc()),
+    ],
   )
-  .enableRLS()
+  .enableRLS();
 
 export const replies = jacksonSchema
   .table(
-    'replies',
+    "replies",
     {
-      requestId: text('request_id')
+      requestId: text("request_id")
         .notNull()
         .references(() => requests.id),
-      replyText: text('reply_text').notNull(),
-      telegramUpdateId: bigint('telegram_update_id', { mode: 'number' }),
-      telegramMessageId: bigint('telegram_message_id', { mode: 'number' }),
-      createdAt: timestampColumn('created_at'),
+      replyText: text("reply_text").notNull(),
+      telegramUpdateId: bigint("telegram_update_id", { mode: "number" }),
+      telegramMessageId: bigint("telegram_message_id", { mode: "number" }),
+      createdAt: timestampColumn("created_at"),
     },
     (table) => [
-      primaryKey({ name: 'uniq_reply_per_request', columns: [table.requestId] }),
-      uniqueIndex('uniq_reply_update_id').on(table.telegramUpdateId),
+      primaryKey({
+        name: "uniq_reply_per_request",
+        columns: [table.requestId],
+      }),
+      uniqueIndex("uniq_reply_update_id").on(table.telegramUpdateId),
     ],
   )
-  .enableRLS()
+  .enableRLS();
 
 export const telegramMessages = jacksonSchema
   .table(
-    'telegram_messages',
+    "telegram_messages",
     {
-      requestId: text('request_id')
+      requestId: text("request_id")
         .notNull()
         .references(() => requests.id),
-      operatorChatId: bigint('operator_chat_id', { mode: 'number' }).notNull(),
-      sentMessageId: bigint('sent_message_id', { mode: 'number' }).notNull(),
-      createdAt: timestampColumn('created_at'),
+      operatorChatId: bigint("operator_chat_id", { mode: "number" }).notNull(),
+      sentMessageId: bigint("sent_message_id", { mode: "number" }).notNull(),
+      createdAt: timestampColumn("created_at"),
     },
     (table) => [
-      primaryKey({ name: 'uniq_telegram_message_request', columns: [table.requestId] }),
-      uniqueIndex('uniq_operator_sent_message').on(table.operatorChatId, table.sentMessageId),
+      primaryKey({
+        name: "uniq_telegram_message_request",
+        columns: [table.requestId],
+      }),
+      uniqueIndex("uniq_operator_sent_message").on(
+        table.operatorChatId,
+        table.sentMessageId,
+      ),
     ],
   )
-  .enableRLS()
+  .enableRLS();
 
 export const telegramWebhookUpdates = jacksonSchema
   .table(
-    'telegram_webhook_updates',
+    "telegram_webhook_updates",
     {
-      updateId: bigint('update_id', { mode: 'number' }).notNull(),
-      status: webhookUpdateStatus('status').notNull(),
-      requestId: text('request_id').references(() => requests.id),
-      messageId: bigint('message_id', { mode: 'number' }),
-      createdAt: timestampColumn('created_at'),
+      updateId: bigint("update_id", { mode: "number" }).notNull(),
+      status: webhookUpdateStatus("status").notNull(),
+      requestId: text("request_id").references(() => requests.id),
+      messageId: bigint("message_id", { mode: "number" }),
+      createdAt: timestampColumn("created_at"),
     },
     (table) => [
-      primaryKey({ name: 'uniq_telegram_update_id', columns: [table.updateId] }),
-      index('by_request_status').on(table.requestId, table.status),
+      primaryKey({
+        name: "uniq_telegram_update_id",
+        columns: [table.updateId],
+      }),
+      index("by_request_status").on(table.requestId, table.status),
     ],
   )
-  .enableRLS()
+  .enableRLS();

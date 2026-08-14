@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "test": "node scripts/check-docs.mjs",
-    "lint": "node scripts/check-docs.mjs",
+    "lint": "biome check .",
+    "format": "biome check . --write",
     "smoke": "node scripts/check-docs.mjs"
   },
   "dependencies": {

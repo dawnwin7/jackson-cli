@@ -8,7 +8,9 @@
   --muted: #98968d;
   --soft: #d9d6ca;
   --accent: #8ad7c1;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
 }
 
 * {
@@ -37,7 +39,9 @@ body::before {
   background-image:
     linear-gradient(rgba(246, 244, 238, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(246, 244, 238, 0.025) 1px, transparent 1px);
-  background-size: 100% 4px, 76px 100%;
+  background-size:
+    100% 4px,
+    76px 100%;
   opacity: 0.22;
 }
 
@@ -73,7 +77,11 @@ a {
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.26);
   color: var(--soft);
   text-decoration: none;
-  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .github-link:hover {
@@ -161,7 +169,11 @@ h1 {
   color: var(--text);
   cursor: pointer;
   padding: 0;
-  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .command-copy:hover {

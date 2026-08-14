@@ -10,9 +10,11 @@
     "build": "turbo build",
     "test": "turbo test",
     "lint": "turbo lint",
+    "format": "turbo format",
     "smoke": "turbo build && bash scripts/smoke.sh"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.5.8",
     "turbo": "2.10.8"
   }
 }

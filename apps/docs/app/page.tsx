@@ -4,7 +4,8 @@ import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 
 const installCommand = "npm i -g @dawnwin7/jackson-cli";
-const skillCommand = "npx skills add https://github.com/dawnwin7/jackson-cli --skill ask-jackson";
+const skillCommand =
+  "npx skills add https://github.com/dawnwin7/jackson-cli --skill ask-jackson";
 const githubUrl = "https://github.com/dawnwin7/jackson-cli";
 
 const commands = [
@@ -49,14 +50,20 @@ export default function HomePage() {
 
   return (
     <main className="landing-shell" aria-label="Jackson CLI landing page">
-      <a className="github-link" href={githubUrl} target="_blank" rel="noreferrer" aria-label="Open jackson-cli on GitHub">
+      <a
+        className="github-link"
+        href={githubUrl}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Open jackson-cli on GitHub"
+      >
         <GitHubMark />
       </a>
       <section className="hero" aria-labelledby="hero-title">
         <p className="eyebrow">Jackson CLI</p>
         <h1 id="hero-title">Let agents message Jackson at any time.</h1>
 
-        <div className="command-stack" aria-label="Setup commands">
+        <div className="command-stack">
           {commands.map((item) => {
             const copied = copiedCommand === item.id;
 
@@ -70,7 +77,11 @@ export default function HomePage() {
                   aria-label={copied ? item.copiedLabel : item.copyLabel}
                   onClick={() => copyCommand(item)}
                 >
-                  {copied ? <Check aria-hidden="true" size={16} /> : <Copy aria-hidden="true" size={16} />}
+                  {copied ? (
+                    <Check aria-hidden="true" size={16} />
+                  ) : (
+                    <Copy aria-hidden="true" size={16} />
+                  )}
                 </button>
               </div>
             );

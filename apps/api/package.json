@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome check . --write",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },

@@ -13,7 +13,8 @@
     "lucide-react": "^1.14.0",
     "next": "catalog:next16",
     "react": "catalog:next16",
-    "react-dom": "catalog:next16"
+    "react-dom": "catalog:next16",
+    "better-auth": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:node24",

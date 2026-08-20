@@ -8,6 +8,7 @@ allowBuilds:
 
 catalog:
   typescript: ^6
+  better-auth: 1.7.0
 
 catalogs:
   node24:

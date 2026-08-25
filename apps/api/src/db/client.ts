@@ -1,7 +1,10 @@
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
-import * as schema from "./schema.js";
+import * as authSchema from "./auth-schema.js";
+import * as applicationSchema from "./schema.js";
+
+const schema = { ...applicationSchema, ...authSchema };
 
 export type JacksonDatabase = PostgresJsDatabase<typeof schema>;
 
